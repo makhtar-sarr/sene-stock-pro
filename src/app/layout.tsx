@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-
+import type React from "react";
+// import { Analytics } from "@vercel/analytics/next";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-const manrope = Manrope({ subsets: ["latin"] })
+const manrope = Manrope({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "SÉNÉ-STOCK PRO - Gestion de Stock Moderne",
@@ -26,7 +29,7 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon.png",
   },
-}
+};
 
 export default function RootLayout({
   children,
@@ -34,11 +37,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
-      <body
-        className={`${manrope.className} antialiased`}
-      >
-        {children}
+    <html lang="fr" suppressHydrationWarning>
+      <body className={`${manrope.className} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
+        {/* <Analytics /> */}
       </body>
     </html>
   );

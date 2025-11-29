@@ -1,4 +1,5 @@
-import Link from "next/link"
+"use client";
+
 import {
   Bell,
   CircleUser,
@@ -10,17 +11,10 @@ import {
   Search,
   ShoppingCart,
   Users,
-} from "lucide-react"
+} from "lucide-react";
+import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,15 +22,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { authClient } from "@/lib/auth-client"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { authClient } from "@/lib/auth-client";
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -151,15 +145,17 @@ export default function DashboardLayout({
               <DropdownMenuItem>Paramètres</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={async () => {
-                await authClient.signOut({
-                  fetchOptions: {
-                    onSuccess: () => {
-                      window.location.href = "/sign-in";
+              <DropdownMenuItem
+                onClick={async () => {
+                  await authClient.signOut({
+                    fetchOptions: {
+                      onSuccess: () => {
+                        window.location.href = "/sign-in";
+                      },
                     },
-                  },
-                });
-              }}>
+                  });
+                }}
+              >
                 Déconnexion
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -170,5 +166,5 @@ export default function DashboardLayout({
         </main>
       </div>
     </div>
-  )
+  );
 }

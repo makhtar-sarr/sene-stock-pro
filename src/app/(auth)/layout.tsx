@@ -6,7 +6,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 my-8">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-12">
         <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center">
