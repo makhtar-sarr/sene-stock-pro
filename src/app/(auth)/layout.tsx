@@ -1,6 +1,6 @@
 import { ShoppingBag } from "lucide-react";
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

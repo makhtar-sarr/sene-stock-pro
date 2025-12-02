@@ -1,3 +1,4 @@
+
 generator client {
   provider   = "prisma-client-js"
   output     = "../src/generated/prisma"
@@ -9,57 +10,65 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified Boolean?
-  image         String?
+  id            String    @id
+  name          String    @db.Text
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?   @db.Text
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
 
+  @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id        String   @id @default(cuid())
-  userId    String
-  token     String
+  id        String   @id
   expiresAt DateTime
-  ipAddress String?
-  userAgent String?
+  token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  ipAddress String?  @db.Text
+  userAgent String?  @db.Text
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([token])
+  @@index([userId(length: 191)])
   @@map("session")
 }
 
 model Account {
-  id           String    @id @default(cuid())
-  userId       String
-  accountId    String
-  providerId   String
-  accessToken  String?
-  refreshToken String?
-  expiresAt    DateTime?
-  password     String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                    String    @id
+  accountId             String    @db.Text
+  providerId            String    @db.Text
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  idToken               String?   @db.Text
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?   @db.Text
+  password              String?   @db.Text
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
+  @@index([userId(length: 191)])
   @@map("account")
 }
 
 model Verification {
-  id         String   @id @default(cuid())
-  identifier String
-  value      String
+  id         String   @id
+  identifier String   @db.Text
+  value      String   @db.Text
   expiresAt  DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  @@index([identifier(length: 191)])
   @@map("verification")
 }
 
@@ -69,11 +78,11 @@ model Product {
   id           String          @id @default(cuid())
   name         String
   description  String?
-  price        Decimal
+  price        Int
   stock        Int             @default(0)
   minStock     Int             @default(5)
   categoryId   String
-  category     Category        @relation(fields: [categoryId], references: [id])
+  category     Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
   movements    StockMovement[]
@@ -91,7 +100,7 @@ model Category {
 model StockMovement {
   id        String       @id @default(cuid())
   productId String
-  product   Product      @relation(fields: [productId], references: [id])
+  product   Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
   type      MovementType
   quantity  Int
   reason    String?
@@ -141,9 +150,9 @@ enum InvoiceStatus {
 model InvoiceItem {
   id        String  @id @default(cuid())
   invoiceId String
-  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   productId String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
-  price     Decimal
+  price     Int
 }

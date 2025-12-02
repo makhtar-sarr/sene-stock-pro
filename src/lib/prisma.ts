@@ -1,9 +1,10 @@
-import { PrismaClient } from "@/generated/prisma";
 import { PrismaTiDBCloud } from "@tidbcloud/prisma-adapter";
+
+import { PrismaClient } from "@/generated/prisma";
 
 const connectionString = `${process.env.DATABASE_URL}`;
 
-const adapter = new PrismaTiDBCloud({url: connectionString});
+const adapter = new PrismaTiDBCloud({ url: connectionString });
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
